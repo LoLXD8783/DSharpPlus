@@ -25,7 +25,7 @@ internal sealed class ShardInfoConverter : JsonConverter
 {
     public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
     {
-        ArgumentNullException.ThrowIfNull(value, nameof(value));
+        Utilities.ThrowIfNull(value, nameof(value));
 
         ShardInfo info = (ShardInfo)value;
         int[] obj = [info.ShardId, info.ShardCount];

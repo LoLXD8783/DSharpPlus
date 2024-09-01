@@ -289,7 +289,10 @@ public static partial class Utilities
 
     internal static void LogTaskFault(this Task task, ILogger logger, LogLevel level, EventId eventId, string message)
     {
-        ArgumentNullException.ThrowIfNull(task);
+        if (task == null)
+        {
+            throw new ArgumentNullException(nameof(task));
+        }
         if (logger == null)
         {
             return;
@@ -316,6 +319,50 @@ public static partial class Utilities
         return (ulong)diff << 22;
     }
 
+    internal static void ThrowIfNullOrWhiteSpace(string? argument, [CallerArgumentExpression(nameof(argument))] string? paramName = null)
+    {
+        if (string.IsNullOrWhiteSpace(argument))
+        {
+            throw new ArgumentException(null, paramName);
+        }
+    }
+    internal static void ThrowIfNullOrEmpty(string? argument, [CallerArgumentExpression(nameof(argument))] string? paramName = null)
+    {
+        if (string.IsNullOrEmpty(argument))
+        {
+            throw new ArgumentException(null, paramName);
+        }
+    }
+    internal static void ThrowIfNull(object? argument, [CallerArgumentExpression(nameof(argument))] string? paramName = null)
+    {
+        if (argument == null)
+        {
+            throw new ArgumentNullException(paramName);
+        }
+    }
+    internal static void ThrowDisposedIf(bool condition, object instance)
+    {
+        if (condition)
+        {
+            throw new ObjectDisposedException(null);
+        }
+    }
+
+    // TODO: find a way to also do source generation for .net standard
+#if NETSTANDARD
+    private static readonly Regex userMentionRegex = new("<@(\\d+)>", RegexOptions.ECMAScript | RegexOptions.Compiled);
+    private static readonly Regex nicknameMentionRegex = new("<@!(\\d+)>", RegexOptions.ECMAScript | RegexOptions.Compiled);
+    private static readonly Regex channelMentionRegex = new("<#(\\d+)>", RegexOptions.ECMAScript | RegexOptions.Compiled);
+    private static readonly Regex roleMentionRegex = new("<@&(\\d+)>", RegexOptions.ECMAScript | RegexOptions.Compiled);
+    private static readonly Regex emojiMentionRegex = new("<a?:(.*):(\\d+)>", RegexOptions.ECMAScript | RegexOptions.Compiled);
+    private static readonly Regex slashCommandNameRegex = new("^[\\w-]{1,32}$", RegexOptions.ECMAScript | RegexOptions.Compiled);
+    private static Regex UserMentionRegex() => userMentionRegex;
+    private static Regex NicknameMentionRegex() => nicknameMentionRegex;
+    private static Regex ChannelMentionRegex() => channelMentionRegex;
+    private static Regex RoleMentionRegex() => roleMentionRegex;
+    private static Regex EmojiMentionRegex() => emojiMentionRegex;
+    private static Regex SlashCommandNameRegex() => slashCommandNameRegex;
+#else 
     [GeneratedRegex("<@(\\d+)>", RegexOptions.ECMAScript)]
     private static partial Regex UserMentionRegex();
 
@@ -333,4 +380,5 @@ public static partial class Utilities
 
     [GeneratedRegex("^[\\w-]{1,32}$")]
     private static partial Regex SlashCommandNameRegex();
+#endif 
 }

@@ -119,7 +119,10 @@ public partial class DiscordWebhookClient
     /// <returns>The registered webhook.</returns>
     public Task<DiscordWebhook> AddWebhookAsync(Uri url)
     {
-        ArgumentNullException.ThrowIfNull(url);
+        if (url == null)
+        {
+            throw new ArgumentNullException(nameof(url));
+        }
         Match m = GetWebhookRegex().Match(url.ToString());
         if (!m.Success)
         {
@@ -145,7 +148,10 @@ public partial class DiscordWebhookClient
     /// <returns>The registered webhook.</returns>
     public async Task<DiscordWebhook> AddWebhookAsync(ulong id, BaseDiscordClient client)
     {
-        ArgumentNullException.ThrowIfNull(client);
+        if(client == null)
+        {
+            throw new ArgumentNullException(nameof(client));
+        }
         if (this.hooks.Any(x => x.Id == id))
         {
             throw new ArgumentException("This webhook is already registered with this client.");
@@ -180,7 +186,10 @@ public partial class DiscordWebhookClient
     /// <returns>The registered webhook.</returns>
     public DiscordWebhook AddWebhook(DiscordWebhook webhook)
     {
-        ArgumentNullException.ThrowIfNull(webhook);
+        if(webhook == null)
+        {
+            throw new ArgumentNullException(nameof(webhook));
+        }
         if (this.hooks.Any(x => x.Id == webhook.Id))
         {
             throw new ArgumentException("This webhook is already registered with this client.");
@@ -268,8 +277,13 @@ public partial class DiscordWebhookClient
         this.apiclient.rest.Dispose();
     }
 
+#if NETSTANDARD
+    private static readonly Regex webhookRegex = new(@"(?:https?:\/\/)?discord(?:app)?.com\/api\/(?:v\d\/)?webhooks\/(?<id>\d+)\/(?<token>[A-Za-z0-9_\-]+)", RegexOptions.ECMAScript);
+    private static Regex GetWebhookRegex() => webhookRegex;
+#else
     [GeneratedRegex(@"(?:https?:\/\/)?discord(?:app)?.com\/api\/(?:v\d\/)?webhooks\/(?<id>\d+)\/(?<token>[A-Za-z0-9_\-]+)", RegexOptions.ECMAScript)]
     private static partial Regex GetWebhookRegex();
+#endif
 }
 
 // 9/11 would improve again

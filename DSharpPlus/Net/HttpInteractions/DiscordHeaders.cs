@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Buffers;
 using System.Text;
 using DSharpPlus.Entities;
@@ -41,7 +41,7 @@ public class DiscordHeaders
         timestampBytes.CopyTo(message, 0);
         body.CopyTo(message.AsSpan(timestampBytes.Length));
 
-        bool result = Ed25519.TryVerifySignature(message.AsSpan(..messageLength), publicKeyBytes.AsSpan(), signatureBytes.AsSpan());
+        bool result = Ed25519.TryVerifySignature(message.AsSpan(0, messageLength), publicKeyBytes.AsSpan(), signatureBytes.AsSpan());
 
         ArrayPool<byte>.Shared.Return(message);
 

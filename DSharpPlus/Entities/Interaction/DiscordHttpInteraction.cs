@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,8 +11,10 @@ namespace DSharpPlus.Entities;
 
 public class DiscordHttpInteraction : DiscordInteraction
 {
+    // Changed to int because non generic TaskCompletionSource doesnt exist in .net standard 2.0
+    // the result is not used
     [JsonIgnore]
-    internal readonly TaskCompletionSource taskCompletionSource = new();
+    internal readonly TaskCompletionSource<int> taskCompletionSource = new();
     
     [JsonIgnore]
     internal byte[] response;
@@ -65,7 +67,7 @@ public class DiscordHttpInteraction : DiscordInteraction
         };
 
         this.response = Encoding.UTF8.GetBytes(DiscordJson.SerializeObject(payload));
-        this.taskCompletionSource.SetResult();
+        this.taskCompletionSource.SetResult(0); // 0 doesn't mean anything here
         
         return Task.CompletedTask;
     }

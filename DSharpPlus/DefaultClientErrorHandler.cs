@@ -58,7 +58,7 @@ public sealed class DefaultClientErrorHandler : IClientErrorHandler
                 badRequest.StackTrace
             );
 
-            return ValueTask.CompletedTask;
+            return default; //ValueTask.CompletedTask;
         }
 
         this.logger.LogError
@@ -70,7 +70,7 @@ public sealed class DefaultClientErrorHandler : IClientErrorHandler
             invokedDelegate.Method.DeclaringType
         );
 
-        return ValueTask.CompletedTask;
+        return default; //ValueTask.CompletedTask;
     }
 
     /// <inheritdoc/>
@@ -82,6 +82,6 @@ public sealed class DefaultClientErrorHandler : IClientErrorHandler
             "An error occurred in the DSharpPlus gateway."
         );
 
-        return ValueTask.CompletedTask;
+        return default; //ValueTask.CompletedTask;
     }
 }

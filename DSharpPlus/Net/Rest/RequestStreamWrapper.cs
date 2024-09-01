@@ -22,7 +22,7 @@ public class RequestStreamWrapper : Stream, IDisposable
 
     public RequestStreamWrapper(Stream stream)
     {
-        ArgumentNullException.ThrowIfNull(stream);
+        Utilities.ThrowIfNull(stream);
         this.UnderlyingStream = stream;
     }
 

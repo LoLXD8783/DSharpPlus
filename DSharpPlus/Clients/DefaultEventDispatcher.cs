@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+#if NET6_0_OR_GREATER
 using System.Runtime.CompilerServices;
+#endif 
 using System.Threading.Tasks;
 
 using DSharpPlus.EventArgs;
@@ -38,7 +40,9 @@ public sealed class DefaultEventDispatcher : IEventDispatcher
     }
 
     /// <inheritdoc/>
+#if NET6_0_OR_GREATER
     [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder))]
+#endif 
     public ValueTask DispatchAsync<T>(DiscordClient client, T eventArgs)
         where T : DiscordEventArgs
     {
@@ -49,7 +53,7 @@ public sealed class DefaultEventDispatcher : IEventDispatcher
 
         if (general.Count == 0 && specific.Count == 0)
         {
-            return ValueTask.CompletedTask;
+            return default; //ValueTask.CompletedTask;
         }
 
         _ = Task.WhenAll
@@ -69,6 +73,6 @@ public sealed class DefaultEventDispatcher : IEventDispatcher
         )
         .ContinueWith((_) => scope.Dispose());
 
-        return ValueTask.CompletedTask;
+        return default; // ValueTask.CompletedTask;
     }
 }

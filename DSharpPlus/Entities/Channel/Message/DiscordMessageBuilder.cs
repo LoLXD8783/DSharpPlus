@@ -1,3 +1,5 @@
+#pragma warning disable CS0436 // conflict with imported type
+
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -359,14 +359,14 @@ public sealed class DiscordEmbedBuilder
     {
         if (string.IsNullOrWhiteSpace(name))
         {
-            ArgumentNullException.ThrowIfNull(name);
+            Utilities.ThrowIfNull(name);
 
             throw new ArgumentException("Name cannot be empty or whitespace.", nameof(name));
         }
 
         if (string.IsNullOrWhiteSpace(value))
         {
-            ArgumentNullException.ThrowIfNull(value);
+            Utilities.ThrowIfNull(value);
 
             throw new ArgumentException("Value cannot be empty or whitespace.", nameof(value));
         }

@@ -36,7 +36,7 @@ public sealed class ImageTool : IDisposable
     /// <param name="stream">Stream to work with.</param>
     public ImageTool(Stream stream)
     {
-        ArgumentNullException.ThrowIfNull(stream);
+        Utilities.ThrowIfNull(stream);
 
         if (!stream.CanRead || !stream.CanSeek)
         {

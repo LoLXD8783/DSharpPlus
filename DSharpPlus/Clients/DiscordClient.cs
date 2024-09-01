@@ -743,7 +743,7 @@ public sealed partial class DiscordClient : BaseDiscordClient
             throw new ArgumentException("Emoji name needs to be between 2 and 50 characters long.");
         }
 
-        ArgumentNullException.ThrowIfNull(image);
+        Utilities.ThrowIfNull(image);
 
         string? image64 = null;
 

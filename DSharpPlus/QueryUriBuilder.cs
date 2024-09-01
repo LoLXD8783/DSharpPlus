@@ -13,7 +13,7 @@ internal class QueryUriBuilder
 
     public QueryUriBuilder(string uri)
     {
-        ArgumentNullException.ThrowIfNull(uri, nameof(uri));
+        Utilities.ThrowIfNull(uri, nameof(uri));
 
         this.SourceUri = uri;
     }

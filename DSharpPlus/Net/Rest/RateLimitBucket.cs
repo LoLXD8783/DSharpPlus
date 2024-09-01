@@ -93,9 +93,9 @@ internal sealed class RateLimitBucket
 
             if
             (
-                !int.TryParse(limitRaw.SingleOrDefault(), CultureInfo.InvariantCulture, out int limit)
-                || !int.TryParse(remainingRaw.SingleOrDefault(), CultureInfo.InvariantCulture, out int remaining)
-                || !double.TryParse(ratelimitResetRaw.SingleOrDefault(), CultureInfo.InvariantCulture, out double ratelimitReset)
+                !int.TryParse(limitRaw.SingleOrDefault(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int limit)
+                || !int.TryParse(remainingRaw.SingleOrDefault(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int remaining)
+                || !double.TryParse(ratelimitResetRaw.SingleOrDefault(), NumberStyles.Float | NumberStyles.AllowThousands, CultureInfo.InvariantCulture, out double ratelimitReset)
             )
             {
                 return false;

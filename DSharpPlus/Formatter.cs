@@ -218,8 +218,17 @@ public static partial class Formatter
     /// <returns>Formatted header.</returns>
     public static string ToSmallHeader(string value)
         => $"### {value}";
+
+#if NETSTANDARD
+    private static readonly Regex markdownSanitizationRegex = new(@"([`\*_~<>\[\]\(\)""@\!\&#:\|])", RegexOptions.ECMAScript);
+    private static readonly Regex markdownStripRegex = new(@"([`\*_~\[\]\(\)""\|]|<@\!?\d+>|<#\d+>|<@\&\d+>|<:[a-zA-Z0-9_\-]:\d+>)", RegexOptions.ECMAScript);
+    private static Regex GetMarkdownSanitizationRegex() => markdownStripRegex;
+    private static Regex GetMarkdownStripRegex() => markdownStripRegex;
+#else
     [GeneratedRegex(@"([`\*_~<>\[\]\(\)""@\!\&#:\|])", RegexOptions.ECMAScript)]
     private static partial Regex GetMarkdownSanitizationRegex();
+
     [GeneratedRegex(@"([`\*_~\[\]\(\)""\|]|<@\!?\d+>|<#\d+>|<@\&\d+>|<:[a-zA-Z0-9_\-]:\d+>)", RegexOptions.ECMAScript)]
     private static partial Regex GetMarkdownStripRegex();
+#endif
 }

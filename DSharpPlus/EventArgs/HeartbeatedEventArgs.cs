@@ -1,5 +1,6 @@
 using System;
 
+#pragma warning disable CS0436 // conflict with imported type
 namespace DSharpPlus.EventArgs;
 
 /// <summary>

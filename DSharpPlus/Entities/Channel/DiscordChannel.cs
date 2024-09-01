@@ -602,7 +602,7 @@ public class DiscordChannel : SnowflakeObject, IEquatable<DiscordChannel>
     /// <remarks>One api call per 100 messages</remarks>
     public async Task<int> DeleteMessagesAsync(IReadOnlyList<DiscordMessage> messages, string? reason = null)
     {
-        ArgumentNullException.ThrowIfNull(messages, nameof(messages));
+        Utilities.ThrowIfNull(messages, nameof(messages));
         int count = messages.Count;
 
         if (count == 0)

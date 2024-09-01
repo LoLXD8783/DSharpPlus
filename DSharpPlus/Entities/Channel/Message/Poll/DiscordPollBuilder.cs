@@ -51,7 +51,7 @@ public class DiscordPollBuilder
     {
         if (emoji is null)
         {
-            ArgumentNullException.ThrowIfNullOrWhiteSpace(text);
+            Utilities.ThrowIfNullOrWhiteSpace(text);
         }
 
         this.options.Add(new DiscordPollMedia { Text = text, Emoji = emoji });

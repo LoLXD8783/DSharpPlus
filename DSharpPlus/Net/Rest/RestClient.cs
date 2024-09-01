@@ -19,10 +19,13 @@ namespace DSharpPlus.Net;
 /// </summary>
 public sealed partial class RestClient : IDisposable
 {
+#if NETSTANDARD
+    private static readonly Regex routeArgumentRegex = new Regex(":([a-z_]+)");
+#else
     [GeneratedRegex(":([a-z_]+)")]
     private static partial Regex GenerateRouteArgumentRegex();
-
     private static readonly Regex routeArgumentRegex = GenerateRouteArgumentRegex();
+#endif
     private readonly HttpClient httpClient;
     private readonly ILogger logger;
     private readonly AsyncManualResetEvent globalRateLimitEvent;
@@ -87,7 +90,7 @@ public sealed partial class RestClient : IDisposable
             new()
             {
                 DelayGenerator = result =>
-                    ValueTask.FromResult<TimeSpan?>((result.Outcome.Exception as PreemptiveRatelimitException)?.ResetAfter
+                    new ValueTask<TimeSpan?>((result.Outcome.Exception as PreemptiveRatelimitException)?.ResetAfter
                         ?? TimeSpan.FromSeconds(retryDelayFallback)),
                 MaxRetryAttempts = maxRetries
             }
@@ -169,7 +172,11 @@ public sealed partial class RestClient : IDisposable
                     this.metrics.RegisterRequestTooLarge();
                     throw new RequestSizeException(request.Build(), response, content);
 
+#if NETSTANDARD2_0
+                case (HttpStatusCode)429:
+#else
                 case HttpStatusCode.TooManyRequests:
+#endif
 
                     this.metrics.RegisterRatelimitHit(response.Headers);
                     throw new RateLimitException(request.Build(), response, content);

@@ -120,7 +120,7 @@ internal sealed class TransportService : ITransportService
     /// <inheritdoc/>
     public async ValueTask<TransportFrame> ReadAsync()
     {
-        ObjectDisposedException.ThrowIf(this.isDisposed, this);
+        Utilities.ThrowDisposedIf(this.isDisposed, this);
 
         if (!this.isConnected)
         {

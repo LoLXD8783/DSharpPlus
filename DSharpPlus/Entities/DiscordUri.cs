@@ -26,7 +26,7 @@ public readonly record struct DiscordUri
 
     internal DiscordUri(string value)
     {
-        ArgumentNullException.ThrowIfNull(value);
+        Utilities.ThrowIfNull(value);
 
         this.uri = value;
         this.Type = IsStandard(this.uri) ? DiscordUriType.Standard : DiscordUriType.NonStandard;

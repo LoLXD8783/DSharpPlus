@@ -2025,7 +2025,7 @@ public class DiscordGuild : SnowflakeObject, IEquatable<DiscordGuild>
             throw new ArgumentException("Emoji name needs to be between 2 and 50 characters long.");
         }
 
-        ArgumentNullException.ThrowIfNull(image);
+        Utilities.ThrowIfNull(image);
 
         string? image64 = null;
         using (ImageTool imgtool = new(image))
@@ -2048,7 +2048,7 @@ public class DiscordGuild : SnowflakeObject, IEquatable<DiscordGuild>
     /// <exception cref="ServerErrorException">Thrown when Discord is unable to process the request.</exception>
     public async Task<DiscordGuildEmoji> ModifyEmojiAsync(DiscordGuildEmoji emoji, string name, IEnumerable<DiscordRole>? roles = null, string? reason = null)
     {
-        ArgumentNullException.ThrowIfNull(emoji);
+        Utilities.ThrowIfNull(emoji);
         if (emoji.Guild.Id != this.Id)
         {
             throw new ArgumentException("This emoji does not belong to this guild.");
@@ -2076,7 +2076,7 @@ public class DiscordGuild : SnowflakeObject, IEquatable<DiscordGuild>
     /// <exception cref="NotFoundException">Thrown when the emoji does not exist on this guild</exception>
     public async Task DeleteEmojiAsync(DiscordGuildEmoji emoji, string? reason = null)
     {
-        ArgumentNullException.ThrowIfNull(emoji);
+        Utilities.ThrowIfNull(emoji);
 
         if (emoji.Guild.Id != this.Id)
         {
